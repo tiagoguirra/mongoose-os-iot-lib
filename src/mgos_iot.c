@@ -26,5 +26,5 @@ int get_led_gpio_pin(void)
 
 bool mgos_iot_init(void)
 {
-  true;
+  return true;
 }
