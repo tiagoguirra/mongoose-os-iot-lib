@@ -23,13 +23,6 @@ int get_led_gpio_pin(void)
 {
   return LED_GPIO;
 }
-static void init_done_cb(int ev, void *ev_data, void *cb_arg)
-{
-  mgos_iot_init();
-  (void)ev;
-  (void)ev_data;
-  (void)cb_arg;
-}
 
 bool mgos_iot_init(void)
 {
