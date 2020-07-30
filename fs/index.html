@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">IOT setup</div>
+      <div id="alert" class="alert"></div>
+      <div id="card" class="card">
+        <span id="spinner" class="spin"></span>
+        <div class="form-control">
+          <label>User e-mail:</label>
+          <input type="text" placeholder="E-mail" id="email" />
+        </div>
+        <div class="form-control">
+          <label>Device name:</label>
+          <input type="text" placeholder="Name" id="name" />
+        </div>
+        <div class="form-control">
+          <label>WiFi network:</label>
+          <input type="text" placeholder="SSID" id="ssid" />
+        </div>
+        <div class="form-control">
+          <label>WiFi password:</label>
+          <input type="text" placeholder="Password" id="pass" />
+        </div>
+        <div class="form-control">
+          <button class="btn" id="save">
+            Save and restart
+          </button>
+        </div>
+        <div class="sucesso">
+          <h2>Succcess!</h2>
+          <p>Rebooting device...</p>
+          <small> This page will be inactive</small>
+        </div>
+      </div>
+    </div>
+    <script src="axios.min.js"></script>
+    <script>
+      const saveButton = document.getElementById('save');
+      const card = document.getElementById('card');
+      const alert = document.getElementById('alert');
+      saveButton.onclick = function() {
+        card.classList.add('loading');
+        alert.classList.remove('show');
+        const ssid = document.getElementById('ssid').value || '';
+        const pass = document.getElementById('pass').value || '';
+        const email = document.getElementById('email').value || '';
+        const deviceName = document.getElementById('name').value || '';
+        const data = {
+          config: {
+            wifi: {
+              sta: { enable: true, ssid: ssid, pass: pass },
+              ap: { enable: false },
+            },
+            custom: {
+              user_email: email,
+              device_name: deviceName,
+            },
+          },
+        };
+        axios
+          .post('/rpc/Config.Set', data)
+          .then(function(res) {
+            return axios.post('/rpc/Config.Save', { reboot: true });
+          })
+          .then(function() {
+            card.classList.remove('loading');
+            card.classList.add('done');
+          })
+          .catch(function(err) {
+            card.classList.remove('loading');
+            alert.classList.add('show');
+            alert.innerHTML = err.message || 'Failure to save config';
+          });
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,199 @@
+html {
+  font-size: 16px;
+  background-color: #f9f9f9;
+  font-family: 'Open Sans', sans-serif;
+}
+body {
+  width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #363636;
+}
+*,
+:after,
+:before {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*:focus {
+  outline: none;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ol,
+p,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+li,
+ol,
+ul {
+  list-style: none;
+}
+
+a,
+button,
+path {
+  color: unset;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  border: unset;
+  cursor: pointer;
+}
+
+input {
+  width: 100%;
+  padding: 5px;
+  height: 40px;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  background-color: transparent;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  transition: all 0.2s ease-in-out;
+}
+input:focus {
+  border-color: #fff;
+}
+
+.container {
+  padding: 15px;
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.header {
+  color: #fff;
+  font-weight: 800;
+  padding: 15px;
+  font-size: 30px;
+}
+.card {
+  flex: 1;
+  max-width: 400px;
+  min-width: 400px;
+  min-height: 200px;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  background-color: #1e1e1e;
+  border: thin solid hsla(0, 0%, 100%, 0.12);
+  transition: all 0.2s ease-in-out;
+}
+.card.done {
+  justify-content: center;
+  background-color: #79b651;
+}
+.card.loading {
+  justify-content: center;
+}
+.card.loading .form-control,
+.card.done .form-control,
+.card.done .spin {
+  display: none;
+}
+.form-control {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  margin: 10px 0;
+  transition: all 0.2s ease-in-out;
+}
+.form-control label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 5px;
+}
+.form {
+  padding: 1em 0;
+}
+.btn {
+  width: 100%;
+  height: 40px;
+  background-color: #79b651;
+  border-color: #79b651;
+  color: #fff;
+  border-radius: 28px;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  font-weight: 500;
+  letter-spacing: 0.0892857143em;
+  font-size: 15px;
+}
+.card.loading .spin {
+  display: block;
+}
+.spin {
+  display: none;
+  width: 50px;
+  height: 50px;
+  margin-bottom: -0.2em;
+  border: 0.15em solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s linear infinite;
+  -webkit-animation: spin 1s linear infinite;
+  transition: all 0.2s ease-in-out;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.alert {
+  display: none;
+  flex: 1;
+  max-width: 400px;
+  min-width: 400px;
+  border-radius: 10px;
+  color: #fff;
+  padding: 15px;
+  background-color: #be1919;
+  margin: 15px 0;
+  transition: all 0.3s ease-in-out;
+}
+.alert.show {
+  display: block;
+}
+.card.done .sucesso {
+  display: flex;
+}
+.sucesso {
+  display: none;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #fff;
+}
