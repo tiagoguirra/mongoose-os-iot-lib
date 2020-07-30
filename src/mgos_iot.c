@@ -26,6 +26,5 @@ int get_led_gpio_pin(void)
 
 bool mgos_iot_init(void)
 {
-  mgos_event_add_handler(MGOS_EVENT_INIT_DONE, init_done_cb, NULL);
   true;
 }
