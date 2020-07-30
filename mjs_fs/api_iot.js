@@ -2,6 +2,9 @@ load('api_config.js');
 load('api_mqtt.js');
 
 let IOT = {
+  ledStatus: function() {
+    return ffi('int get_led_gpio_pin()')();
+  },
   template: {
     LIGHT: 'light',
     LIGHT_RGB: 'light_rgb',
