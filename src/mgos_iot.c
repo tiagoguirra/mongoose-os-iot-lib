@@ -24,7 +24,7 @@ int get_led_gpio_pin(void)
   return LED_GPIO;
 }
 
-bool mgos_iot_init(void)
+bool mgos_mongoose_os_iot_lib_init(void)
 {
   return true;
 }
