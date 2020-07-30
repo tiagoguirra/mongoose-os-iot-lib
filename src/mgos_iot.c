@@ -1,7 +1,7 @@
 #include <stdio.h>
 
+#include "mgos_event.h"
 #include "mgos.h"
-#include "mjs.h"
 
 #if CS_PLATFORM == CS_P_ESP8266
 #define LED_GPIO 2 /* On ESP-12E there is a blue LED connected to GPIO2  */
@@ -23,8 +23,16 @@ int get_led_gpio_pin(void)
 {
   return LED_GPIO;
 }
-
-enum mgos_app_init_result mgos_app_init(void)
+static void init_done_cb(int ev, void *ev_data, void *cb_arg)
 {
-  return MGOS_APP_INIT_SUCCESS;
+  mgos_iot_init();
+  (void)ev;
+  (void)ev_data;
+  (void)cb_arg;
+}
+
+bool mgos_iot_init(void)
+{
+  mgos_event_add_handler(MGOS_EVENT_INIT_DONE, init_done_cb, NULL);
+  true;
 }
