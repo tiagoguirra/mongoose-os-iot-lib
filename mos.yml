@@ -2,7 +2,7 @@ author: Tiago Guirra
 description: A IOT base project
 type: lib
 version: 1.0
-manifest_version: 2020-07-30
+manifest_version: 2017-05-18
 
 platforms: [cc3200, esp32, esp8266]
 
