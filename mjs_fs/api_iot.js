@@ -15,7 +15,7 @@ let IOT = {
     print('Set pairing mode');
     Cfg.set({wifi: {ap: {enable: !Cfg.get('wifi.ap.enable')}}});
   },
-  register: function(template = 'light', properties) {
+  register: function(template, properties) {
     let mqttTopic = Cfg.get('mqtt_events');
     let device = {
       event: 'register_device',
