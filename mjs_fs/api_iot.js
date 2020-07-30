@@ -1,5 +1,5 @@
-load('api_config.js')
-load('api_mqtt.js')
+load('api_config.js');
+load('api_mqtt.js');
 
 let IOT = {
   template: {
@@ -9,14 +9,14 @@ let IOT = {
     SMARTLOCK: 'smartlock',
   },
   isPairingMode: function() {
-    return Cfg.get('wifi.ap.enable')
+    return Cfg.get('wifi.ap.enable');
   },
   setPairingMode: function() {
-    print('Set pairing mode')
-    Cfg.set({ wifi: { ap: { enable: !Cfg.get('wifi.ap.enable') } } })
+    print('Set pairing mode');
+    Cfg.set({wifi: {ap: {enable: !Cfg.get('wifi.ap.enable')}}});
   },
-  register: function(template = this.template.LIGHT, properties) {
-    let mqttTopic = Cfg.get('mqtt_events')
+  register: function(template = 'light', properties) {
+    let mqttTopic = Cfg.get('mqtt_events');
     let device = {
       event: 'register_device',
       device_id: Cfg.get('device.id'),
@@ -25,8 +25,8 @@ let IOT = {
       properties: properties,
       device_template: template,
       topic_events: mqttTopic,
-    }
-    print('Register device', JSON.stringify(device))
-    MQTT.pub(mqttTopic, JSON.stringify(device), 0)
+    };
+    print('Register device', JSON.stringify(device));
+    MQTT.pub(mqttTopic, JSON.stringify(device), 0);
   },
-}
+};
