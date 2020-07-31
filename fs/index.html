@@ -10,8 +10,8 @@
       <div id="card" class="card">
         <span id="spinner" class="spin"></span>
         <div class="form-control">
-          <label>User e-mail:</label>
-          <input type="text" placeholder="E-mail" id="email" />
+          <label>User id:</label>
+          <input type="text" placeholder="Identifier" id="identifier" />
         </div>
         <div class="form-control">
           <label>Device name:</label>
@@ -47,16 +47,16 @@
         alert.classList.remove('show');
         const ssid = document.getElementById('ssid').value || '';
         const pass = document.getElementById('pass').value || '';
-        const email = document.getElementById('email').value || '';
+        const identifier = document.getElementById('identifier').value || '';
         const deviceName = document.getElementById('name').value || '';
         const data = {
           config: {
             wifi: {
-              sta: { enable: true, ssid: ssid, pass: pass },
-              ap: { enable: false },
+              sta: {enable: true, ssid: ssid, pass: pass},
+              ap: {enable: false},
             },
             custom: {
-              user_email: email,
+              user_id: identifier,
               device_name: deviceName,
             },
           },
@@ -64,7 +64,7 @@
         axios
           .post('/rpc/Config.Set', data)
           .then(function(res) {
-            return axios.post('/rpc/Config.Save', { reboot: true });
+            return axios.post('/rpc/Config.Save', {reboot: true});
           })
           .then(function() {
             card.classList.remove('loading');
