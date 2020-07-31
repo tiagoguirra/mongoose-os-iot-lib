@@ -24,7 +24,7 @@ config_schema:
   - ['wifi.ap.enable', 'b', true, {title: 'Enable'}]
   - ['wifi.ap.ssid', 's', 'IOT_??????', {title: 'SSID'}]
   - ['wifi.ap.pass', 's', '12345678', {title: 'Password', type: 'password'}]
-  - ['custom.user_email', 's', '', {title: 'User email'}]
+  - ['custom.user_id', 's', '', {title: 'User id'}]
   - ['custom.device_name', 's', '', {title: 'Device name'}]
   - ['mqtt_events', 's', 'iot/response', {title: 'Mqtt events'}]
 
