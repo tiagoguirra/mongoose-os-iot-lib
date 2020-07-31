@@ -32,13 +32,13 @@ let IOT = {
     print('Register device', JSON.stringify(device));
     MQTT.pub(mqttTopic, JSON.stringify(device), 0);
   },
-  interaction = function(property,state,type) {
+  interaction: function(property, state, type) {
     let device = {
-      event: type ? type :'physical_interaction',
+      event: type ? type : 'physical_interaction',
       device_id: Cfg.get('device.id'),
       property: property,
       state: state,
     };
     MQTT.pub(Cfg.get('mqtt_events'), JSON.stringify(device), 0);
-  }
+  },
 };
