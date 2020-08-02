@@ -62,12 +62,7 @@ let IOT = {
     MQTT.pub(Cfg.get('mqtt_events'), JSON.stringify(device), 0);
   },
   handler: function(callback) {
-    Shadow.addHandler(function(event, obj) {
-      print('Event', event, JSON.stringify(obj));
-      if (event === 'UPDATE_DELTA') {
-        callback(obj);
-      }
-    });
+    Shadow.addHandler(callback);
   },
   report: function(state) {
     print('reportState', JSON.stringify(state));
