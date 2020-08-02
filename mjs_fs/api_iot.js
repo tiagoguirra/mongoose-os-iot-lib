@@ -18,11 +18,12 @@ let IOT = {
     print('Set pairing mode');
     Cfg.set({wifi: {ap: {enable: !Cfg.get('wifi.ap.enable')}}});
   },
-  register: function(template, properties) {
+  register: function(template, properties, initialState) {
     let mqttTopic = Cfg.get('mqtt_events');
+    let deviceId = Cfg.get('device.id');
     let device = {
       event: 'register_device',
-      device_id: Cfg.get('device.id'),
+      device_id: deviceId,
       device_name: Cfg.get('custom.device_name'),
       user_id: Cfg.get('custom.user_id'),
       properties: properties,
@@ -31,14 +32,37 @@ let IOT = {
     };
     print('Register device', JSON.stringify(device));
     MQTT.pub(mqttTopic, JSON.stringify(device), 0);
+    if (initialState) {
+      let desired = {
+        state: {
+          desired: initialState,
+        },
+      };
+      MQTT.pub(
+        '$aws/things/' + deviceId + '/shadow/update',
+        JSON.stringify(desired),
+        1
+      );
+    }
   },
   interaction: function(property, state, type) {
+    let deviceId = Cfg.get('device.id');
     let device = {
       event: type ? type : 'physical_interaction',
-      device_id: Cfg.get('device.id'),
+      device_id: deviceId,
       property: property,
       state: state,
     };
+    let desired = {
+      state: {
+        desired: state,
+      },
+    };
+    MQTT.pub(
+      '$aws/things/' + deviceId + '/shadow/update',
+      JSON.stringify(desired),
+      1
+    );
     MQTT.pub(Cfg.get('mqtt_events'), JSON.stringify(device), 0);
   },
 };
