@@ -1,5 +1,6 @@
 load('api_config.js');
 load('api_mqtt.js');
+load('api_shadow.js');
 
 let IOT = {
   ledStatus: function() {
@@ -10,6 +11,19 @@ let IOT = {
     LIGHT_RGB: 'light_rgb',
     LIGHT_BRIGHTNESS: 'light_brightness',
     SMARTLOCK: 'smartlock',
+  },
+  desired: function(state) {
+    let desiredState = {
+      state: {
+        desired: state,
+      },
+    };
+    print('Report desired', JSON.stringify(desiredState));
+    MQTT.pub(
+      '$aws/things/' + Cfg.get('device.id') + '/shadow/update',
+      JSON.stringify(desiredState),
+      1
+    );
   },
   isPairingMode: function() {
     return Cfg.get('wifi.ap.enable');
@@ -33,16 +47,7 @@ let IOT = {
     print('Register device', JSON.stringify(device));
     MQTT.pub(mqttTopic, JSON.stringify(device), 0);
     if (initialState) {
-      let desired = {
-        state: {
-          desired: initialState,
-        },
-      };
-      MQTT.pub(
-        '$aws/things/' + deviceId + '/shadow/update',
-        JSON.stringify(desired),
-        1
-      );
+      this.desired(initialState);
     }
   },
   interaction: function(property, state, type) {
@@ -53,16 +58,19 @@ let IOT = {
       property: property,
       state: state,
     };
-    let desired = {
-      state: {
-        desired: state,
-      },
-    };
-    MQTT.pub(
-      '$aws/things/' + deviceId + '/shadow/update',
-      JSON.stringify(desired),
-      1
-    );
+    this.desired(state);
     MQTT.pub(Cfg.get('mqtt_events'), JSON.stringify(device), 0);
+  },
+  handler: function(callback) {
+    Shadow.addHandler(function(event, obj) {
+      print('Event', event, JSON.stringify(obj));
+      if (event === 'UPDATE_DELTA') {
+        callback(obj);
+      }
+    });
+  },
+  report: function(state) {
+    print('reportState', JSON.stringify(state));
+    Shadow.update(0, state);
   },
 };
