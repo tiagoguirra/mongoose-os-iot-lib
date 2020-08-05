@@ -24,9 +24,18 @@ config_schema:
   - ['wifi.ap.enable', 'b', true, {title: 'Enable'}]
   - ['wifi.ap.ssid', 's', 'IOT_??????', {title: 'SSID'}]
   - ['wifi.ap.pass', 's', '12345678', {title: 'Password', type: 'password'}]
-  - ['custom.user_id', 's', '', {title: 'User id'}]
-  - ['custom.device_name', 's', '', {title: 'Device name'}]
-  - ['mqtt_events', 's', 'iot/response', {title: 'Mqtt events'}]
+  - ['iot', 'o', {title: 'IOT settings'}]
+  - ['iot.user_id', 's', '', {title: 'User id'}]
+  - ['iot.device_name', 's', '', {title: 'Device name'}]
+  - ['iot.events', 's', 'iot/response', {title: 'Mqtt events'}]
+  - ['iot.pulse', 'i', 0, {title: 'Pulse time'}]
+  - ['iot.initial.power', 's', 'OFF', {title: 'Initial power state'}]
+  - ['iot.initial.color.red', 'i', 0, {title: 'Initial color red state'}]
+  - ['iot.initial.color.green', 'i', 0, {title: 'Initial color green state'}]
+  - ['iot.initial.color.blue', 'i', 0, {title: 'Initial color blue state'}]
+  - ['iot.initial.brightness', 'i', 0, {title: 'Initial brightness state'}]
+  - ['iot.initial.lock', 's', 'LOCKED', {title: 'Initial lock state'}]
+  - ['iot.initial.sensorContact', 's', 'NOT_DETECTED', {title: 'Initial lock state'}]
 
 libs:
   - origin: https://github.com/mongoose-os-libs/ca-bundle
