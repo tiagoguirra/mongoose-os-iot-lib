@@ -121,4 +121,15 @@ let IOT = {
     }
     return false;
   },
+  getInitialState: function(property) {
+    if (property === 'color') {
+      return {
+        red: Cfg.get('iot.initial.color.red'),
+        green: Cfg.get('iot.initial.color.green'),
+        blue: Cfg.get('iot.initial.color.blue'),
+      };
+    } else {
+      return Cfg.get('iot.initial.' + property);
+    }
+  },
 };
