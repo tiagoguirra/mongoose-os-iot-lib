@@ -98,11 +98,7 @@ let IOT = {
     Shadow.update(0, state);
   },
   setConfig: function(config) {
-    let changeConfig = Cfg.get('iot');
-    for (let key in config) {
-      changeConfig[key] = config[key];
-    }
-    Cfg.set({iot: changeConfig});
+    Cfg.set({iot: config});
     Timer.set(
       750,
       0,
@@ -113,11 +109,7 @@ let IOT = {
     );
   },
   setInitialState: function(initial) {
-    let changeInitialState = Cfg.get('iot.initial');
-    for (let key in initial) {
-      changeInitialState[key] = initial[key];
-    }
-    this.setConfig({initial: changeInitialState});
+    this.setConfig({initial: initial});
   },
   getPulseTime: function() {
     return Cfg.get('iot.pulse');
