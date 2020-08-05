@@ -61,6 +61,16 @@ let IOT = {
     this.desired(state);
     MQTT.pub(Cfg.get('mqtt_events'), JSON.stringify(device), 0);
   },
+  sensorChange: function(property, state, type) {
+    let deviceId = Cfg.get('device.id');
+    let device = {
+      event: type ? type : 'physical_interaction',
+      device_id: deviceId,
+      property: property,
+      state: state,
+    };
+    MQTT.pub(Cfg.get('mqtt_events'), JSON.stringify(device), 0);
+  },
   handler: function(callback) {
     Shadow.addHandler(callback);
   },
