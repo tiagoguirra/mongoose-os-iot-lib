@@ -79,6 +79,7 @@ let IOT = {
     Shadow.addHandler(callback);
   },
   report: function(state) {
+    print('reportState', JSON.stringify(state));
     state.config = {
       user_id: Cfg.get('iot.user_id'),
       device_name: Cfg.get('iot.device_name'),
@@ -94,7 +95,6 @@ let IOT = {
         state.initialState[key] = Cfg.get('iot.initial.' + key);
       }
     }
-    print('reportState', JSON.stringify(state));
     Shadow.update(0, state);
   },
   setConfig: function(config) {
