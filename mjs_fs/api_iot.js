@@ -3,6 +3,7 @@ load('api_mqtt.js');
 load('api_shadow.js');
 
 let IOT = {
+  _properties: {},
   ledStatus: function() {
     return ffi('int get_led_gpio_pin()')();
   },
@@ -44,6 +45,7 @@ let IOT = {
       device_template: template,
       topic_events: mqttTopic,
     };
+    this._properties = properties;
     print('Register device', JSON.stringify(device));
     MQTT.pub(mqttTopic, JSON.stringify(device), 0);
     if (initialState) {
@@ -82,7 +84,16 @@ let IOT = {
       device_name: Cfg.get('iot.device_name'),
       pulse: Cfg.get('iot.pulse'),
     };
-    state.initialState = Cfg.get('iot.initial');
+    state.initialState = {};
+    for (key in this._properties) {
+      if (key === 'color') {
+        state.initialState.color.red = Cfg.get('iot.initial.red');
+        state.initialState.color.green = Cfg.get('iot.initial.green');
+        state.initialState.color.blue = Cfg.get('iot.initial.blue');
+      } else {
+        state.initialState[key] = Cfg.get('iot.initial.' + key);
+      }
+    }
     print('reportState', JSON.stringify(state));
     Shadow.update(0, state);
   },
