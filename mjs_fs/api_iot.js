@@ -12,6 +12,8 @@ let IOT = {
     LIGHT_RGB: 'light_rgb',
     LIGHT_BRIGHTNESS: 'light_brightness',
     SMARTLOCK: 'smartlock',
+    TEMPERATURE_SENSOR: 'sensorTemperature',
+    CONTACT_SENSOR: 'sensorContact',
   },
   desired: function(state) {
     let desiredState = {
@@ -33,6 +35,15 @@ let IOT = {
     print('Set pairing mode');
     Cfg.set({wifi: {ap: {enable: !Cfg.get('wifi.ap.enable')}}});
   },
+  isSensor: function(_template) {
+    if (_template === this.template.TEMPERATURE_SENSOR) {
+      return true;
+    } else if (_template === this.template.CONTACT_SENSOR) {
+      return true;
+    } else {
+      return false;
+    }
+  },
   register: function(template, properties, initialState) {
     let mqttTopic = Cfg.get('iot.events');
     let deviceId = Cfg.get('device.id');
@@ -48,20 +59,22 @@ let IOT = {
     this._properties = properties;
     print('Register device', JSON.stringify(device));
     MQTT.pub(mqttTopic, JSON.stringify(device), 0);
-    if (initialState) {
-      this.desired(initialState);
-    } else {
-      let state = {};
-      for (let prop in properties) {
-        if (prop === 'color') {
-          state.red = Cfg.get('iot.initial.color.red');
-          state.green = Cfg.get('iot.initial.color.green');
-          state.blue = Cfg.get('iot.initial.color.blue');
-        } else {
-          state[prop] = Cfg.get('iot.initial.' + prop);
+    if (!this.isSensor(template)) {
+      if (initialState) {
+        this.desired(initialState);
+      } else {
+        let state = {};
+        for (let prop in properties) {
+          if (prop === 'color') {
+            state.red = Cfg.get('iot.initial.color.red');
+            state.green = Cfg.get('iot.initial.color.green');
+            state.blue = Cfg.get('iot.initial.color.blue');
+          } else {
+            state[prop] = Cfg.get('iot.initial.' + prop);
+          }
         }
+        this.desired(state);
       }
-      this.desired(state);
     }
   },
   interaction: function(property, state, type) {
