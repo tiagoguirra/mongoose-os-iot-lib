@@ -101,9 +101,9 @@ let IOT = {
     state.initialState = {};
     for (let key in this._properties) {
       if (key === 'color') {
-        state.initialState.color.red = Cfg.get('iot.initial.red');
-        state.initialState.color.green = Cfg.get('iot.initial.green');
-        state.initialState.color.blue = Cfg.get('iot.initial.blue');
+        state.initialState.color.red = Cfg.get('iot.initial.color.red');
+        state.initialState.color.green = Cfg.get('iot.initial.color.green');
+        state.initialState.color.blue = Cfg.get('iot.initial.color.blue');
       } else {
         state.initialState[key] = Cfg.get('iot.initial.' + key);
       }
