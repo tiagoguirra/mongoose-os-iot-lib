@@ -57,7 +57,7 @@
         const ssid = document.getElementById('ssid').value || '';
         const pass = document.getElementById('pass').value || '';
         const deviceName = document.getElementById('name').value || '';
-        const usernmae = document.getElementById('usernmae').value || '';
+        const username = document.getElementById('username').value || '';
         const password = document.getElementById('password').value || '';
         const data = {
           config: {
@@ -66,7 +66,7 @@
               ap: {enable: false},
             },
             iot: {
-              usernmae,
+              username,
               password,
               device_name: deviceName,
             },
