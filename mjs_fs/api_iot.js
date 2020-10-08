@@ -4,7 +4,7 @@ load('api_shadow.js');
 
 let IOT = {
   _properties: {},
-  ledStatus: function() {
+  ledStatus: function () {
     return ffi('int get_led_gpio_pin()')();
   },
   template: {
@@ -14,8 +14,9 @@ let IOT = {
     SMARTLOCK: 'smartlock',
     TEMPERATURE_SENSOR: 'sensorTemperature',
     CONTACT_SENSOR: 'sensorContact',
+    DOORBELL: 'doorBell',
   },
-  desired: function(state) {
+  desired: function (state) {
     let desiredState = {
       state: {
         desired: state,
@@ -28,37 +29,38 @@ let IOT = {
       1
     );
   },
-  isPairingMode: function() {
+  isPairingMode: function () {
     return Cfg.get('wifi.ap.enable');
   },
-  setPairingMode: function() {
+  setPairingMode: function () {
     print('Set pairing mode');
     Cfg.set({wifi: {ap: {enable: !Cfg.get('wifi.ap.enable')}}});
   },
-  isSensor: function(_template) {
+  isSensor: function (_template) {
     if (_template === this.template.TEMPERATURE_SENSOR) {
       return true;
     } else if (_template === this.template.CONTACT_SENSOR) {
+      return true;
+    } else if (_template === this.template.DOORBELL) {
       return true;
     } else {
       return false;
     }
   },
-  register: function(template, properties, initialState) {
+  register: function (template, properties, modes, initialState) {
     let mqttTopic = Cfg.get('iot.events');
     let deviceId = Cfg.get('device.id');
     let device = {
       event: 'register_device',
       device_id: deviceId,
       device_name: Cfg.get('iot.device_name'),
-      user_id: Cfg.get('iot.user_id'),
+      username: Cfg.get('iot.username'),
+      password: Cfg.get('iot.password'),
       properties: properties,
       device_template: template,
-      topic_events: mqttTopic,
+      modes
     };
     this._properties = properties;
-    print('Register device', JSON.stringify(device));
-    MQTT.pub(mqttTopic, JSON.stringify(device), 0);
     if (!this.isSensor(template)) {
       if (initialState) {
         this.desired(initialState);
@@ -66,18 +68,26 @@ let IOT = {
         let state = {};
         for (let prop in properties) {
           if (prop === 'color') {
+            device.properties.color = {
+              red: Cfg.get('iot.initial.color.red'),
+              green: Cfg.get('iot.initial.color.green'),
+              blue: Cfg.get('iot.initial.color.blue'),
+            };
             state.red = Cfg.get('iot.initial.color.red');
             state.green = Cfg.get('iot.initial.color.green');
             state.blue = Cfg.get('iot.initial.color.blue');
           } else {
+            device.properties[props] = Cfg.get('iot.initial.' + prop);
             state[prop] = Cfg.get('iot.initial.' + prop);
           }
         }
         this.desired(state);
       }
     }
+    print('Register device', JSON.stringify(device));
+    MQTT.pub(mqttTopic, JSON.stringify(device), 0);
   },
-  interaction: function(property, state, type) {
+  interaction: function (property, state, type) {
     let deviceId = Cfg.get('device.id');
     let device = {
       event: type ? type : 'physical_interaction',
@@ -88,10 +98,10 @@ let IOT = {
     this.desired(state);
     MQTT.pub(Cfg.get('iot.events'), JSON.stringify(device), 0);
   },
-  handler: function(callback) {
+  handler: function (callback) {
     Shadow.addHandler(callback);
   },
-  report: function(state) {
+  report: function (state) {
     print('reportState', JSON.stringify(state));
     state.config = {
       user_id: Cfg.get('iot.user_id'),
@@ -113,31 +123,31 @@ let IOT = {
     }
     Shadow.update(0, state);
   },
-  setConfig: function(config) {
+  setConfig: function (config) {
     Cfg.set({iot: config});
     Timer.set(
       750,
       0,
-      function() {
+      function () {
         Sys.reboot(500);
       },
       null
     );
   },
-  setInitialState: function(initial) {
+  setInitialState: function (initial) {
     this.setConfig({initial: initial});
   },
-  getPulseTime: function() {
+  getPulseTime: function () {
     return Cfg.get('iot.pulse');
   },
-  isPulse: function() {
+  isPulse: function () {
     let pulse = this.getPulseTime();
     if (pulse > 0) {
       return true;
     }
     return false;
   },
-  getInitialState: function(property) {
+  getInitialState: function (property) {
     if (property === 'color') {
       return {
         red: Cfg.get('iot.initial.color.red'),

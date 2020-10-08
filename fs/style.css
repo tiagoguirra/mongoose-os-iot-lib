@@ -9,9 +9,6 @@ body {
   overflow-x: hidden;
   padding: 0;
   margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: #363636;
 }
 *,
@@ -74,13 +71,13 @@ input:focus {
 }
 
 .container {
-  padding: 15px;
   width: 100%;
   min-height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  padding: 15px 25px;
+  margin-top: -50px;
 }
 .header {
   color: #fff;
@@ -135,8 +132,8 @@ input:focus {
 .btn {
   width: 100%;
   height: 40px;
-  background-color: #79b651;
-  border-color: #79b651;
+  background-color: #7454fd;
+  border-color: #7454fd;
   color: #fff;
   border-radius: 28px;
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -173,14 +170,14 @@ input:focus {
 
 .alert {
   display: none;
-  flex: 1;
   max-width: 400px;
-  min-width: 400px;
+  min-width: 20px;
   border-radius: 10px;
   color: #fff;
-  padding: 15px;
+  padding: 5px 10px;
   background-color: #be1919;
-  margin: 15px 0;
+  margin-top: 15px;
+  font-size: 16px;
   transition: all 0.3s ease-in-out;
 }
 .alert.show {
@@ -196,4 +193,47 @@ input:focus {
   align-items: center;
   flex-direction: column;
   color: #fff;
+}
+.header-full {
+  width: 100%;
+  height: 250px;
+  background-color: #7454fd;
+}
+.header-full .title,
+.header-full .subtitle {
+  color: #fff;
+}
+
+.page-header {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 5px;
+  margin-bottom: 25px;
+  color: #fff;
+  font-size: 30px;
+  text-align: left;
+  display: block;
+  flex: 1 1 0px;
+  max-width: 100%;
+  border-bottom: thin solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.page-header .title,
+.page-header .subtitle {
+}
+.page-header .subtitle {
+  font-size: 14px;
+}
+
+@media (max-width: 860px) {
+  .card {
+    width: 90%;
+    min-width: 100px;
+  }
+  .container {
+    padding: 15px 0px;
+  }
 }

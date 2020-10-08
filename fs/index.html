@@ -1,17 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>Guirra IOT - Device register</title>
     <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   </head>
   <body>
+    <div class="header-full">
+      <div class="page-header">
+        <div class="title">Guirra IOT</div>
+        <div class="subtitle">Device register</div>
+        <div id="alert" class="alert"></div>
+      </div>
+    </div>
     <div class="container">
-      <div class="header">IOT setup</div>
-      <div id="alert" class="alert"></div>
       <div id="card" class="card">
         <span id="spinner" class="spin"></span>
         <div class="form-control">
-          <label>User id:</label>
-          <input type="text" placeholder="Identifier" id="identifier" />
+          <label>Username:</label>
+          <input type="text" placeholder="Username" id="username" />
+        </div>
+        <div class="form-control">
+          <label>Password:</label>
+          <input type="text" placeholder="Password" id="password" />
         </div>
         <div class="form-control">
           <label>Device name:</label>
@@ -26,9 +37,7 @@
           <input type="text" placeholder="Password" id="pass" />
         </div>
         <div class="form-control">
-          <button class="btn" id="save">
-            Save and restart
-          </button>
+          <button class="btn" id="save">Save and restart</button>
         </div>
         <div class="sucesso">
           <h2>Succcess!</h2>
@@ -42,35 +51,37 @@
       const saveButton = document.getElementById('save');
       const card = document.getElementById('card');
       const alert = document.getElementById('alert');
-      saveButton.onclick = function() {
+      saveButton.onclick = function () {
         card.classList.add('loading');
         alert.classList.remove('show');
         const ssid = document.getElementById('ssid').value || '';
         const pass = document.getElementById('pass').value || '';
-        const identifier = document.getElementById('identifier').value || '';
         const deviceName = document.getElementById('name').value || '';
+        const usernmae = document.getElementById('usernmae').value || '';
+        const password = document.getElementById('password').value || '';
         const data = {
           config: {
             wifi: {
               sta: {enable: true, ssid: ssid, pass: pass},
               ap: {enable: false},
             },
-            custom: {
-              user_id: identifier,
+            iot: {
+              usernmae,
+              password,
               device_name: deviceName,
             },
           },
         };
         axios
           .post('/rpc/Config.Set', data)
-          .then(function(res) {
+          .then(function (res) {
             return axios.post('/rpc/Config.Save', {reboot: true});
           })
-          .then(function() {
+          .then(function () {
             card.classList.remove('loading');
             card.classList.add('done');
           })
-          .catch(function(err) {
+          .catch(function (err) {
             card.classList.remove('loading');
             alert.classList.add('show');
             alert.innerHTML = err.message || 'Failure to save config';
