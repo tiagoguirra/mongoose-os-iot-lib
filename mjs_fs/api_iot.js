@@ -77,7 +77,7 @@ let IOT = {
             state.green = Cfg.get('iot.initial.color.green');
             state.blue = Cfg.get('iot.initial.color.blue');
           } else {
-            device.properties[props] = Cfg.get('iot.initial.' + prop);
+            device.properties[prop] = Cfg.get('iot.initial.' + prop);
             state[prop] = Cfg.get('iot.initial.' + prop);
           }
         }
