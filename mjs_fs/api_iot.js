@@ -58,7 +58,7 @@ let IOT = {
       password: Cfg.get('iot.password'),
       properties: properties,
       device_template: template,
-      modes
+      modes: modes,
     };
     this._properties = properties;
     if (!this.isSensor(template)) {
